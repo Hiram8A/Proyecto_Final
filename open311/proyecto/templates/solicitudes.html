@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+  <head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+      .titulo{
+        background-color: #19568a;
+        border-radius: 30px;
+        padding: 10px;
+        font-family: arial;
+        margin-left: 10%;
+        margin-right: 10%;
+      }
+
+      h1{
+        color:whitesmoke;
+        font-size: xxx-large;
+      }
+
+    </style>
+  </head>
+
+  <br>
+
+  <body>
+    <!-- encabezado -->
+    <div class="titulo" align="center" >
+      <h1>Solicitudes</h1>
+    </div>
+    
+    <!-- contenido -->
+    <div align="center">
+      <div style="width: 70%;">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">
+                  #
+                </th>
+                <th scope="col">
+                  Nombre
+                </th>
+                <th scope="col">
+                  Descripcion
+                </th>
+                <th scope="col">
+                  Precio ($)
+                </th>
+                <th scope="col">
+                  Fecha de Registro
+                </th>
+                <th scope="col">
+                  Estatus
+                </th>
+                <th scope="col">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+                {% for solicitud in solicitudes %}
+                <tr>
+                <td scope="row">
+                    {{ solicitud.pk }}
+                </td>
+                <td>
+                    {{ solicitud.nombre }}
+                </td>
+                <td>
+                    {{ solicitud.descripcion }}
+                </td>
+                <td>
+                    {{ solicitud.precio }}
+                </td>
+                <td>
+                    {{ solicitud.fecha_registro }}
+                </td>
+                <td>
+                  {% if solicitud.estatus %}
+                      <p>Disponible</p>
+                  {% else %}
+                      <p>No disponible</p>
+                  {% endif %}
+                </td>
+                  
+                <td>
+                  <form method="post" id="form-eliminar" class="form-eliminar" action="{% url 'eliminar_solicitud' solicitud.pk %}">
+                    {% csrf_token%}
+                    <input type="hidden" name="solicitud_id" value="{{ solicitud.pk }}">
+                    <button type="button" class="btn btn-danger" id="btn-confirmar-eliminar-{{ solicitud.pk }}">Eliminar</button>
+                    
+                    <div class="dropdown" id="dropdown-confirmacion-{{ solicitud.pk }}" style="display: none;">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Confirmar eliminacion
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button class="dropdown-item" type="submit">Si, deseo eliminar</button>
+                        <button class="dropdown-item" type="button" id="btn-cancelar-eliminar-{{ solicitud.pk }}">Cancelar</button>
+                      </div>
+                    </div>
+
+                    </form>
+                </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <script>
+      // Muestra Menú Despegable
+      $(document).ready(function(){
+
+        $('[id^="btn-confirmar-eliminar"]').click(function(){
+          var div_Id = $(this).attr('id').split('-')[3];
+
+          $('#dropdown-confirmacion-' + div_Id).show();
+         });   
+      
+      // Cancela la eliminación
+        $('[id^="btn-cancelar-eliminar"]').click(function(){
+          var div_Id = $(this).attr('id').split('-')[3];
+            $('#dropdown-confirmacion-' + div_Id).hide();
+        });
+      });
+
+    </script>
+
+
+
+  </body>
+</html>
+{% endblock %}
