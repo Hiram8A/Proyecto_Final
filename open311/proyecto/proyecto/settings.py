@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'DMU', #APP Solicitudes
+    #'bootstrap4',
+    #'widget_tweaks',
 ]
 
 MIDDLEWARE = [
