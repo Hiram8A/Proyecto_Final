@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<head></head>
+
+<style>
+
+    body {
+        background-image: url("{% static 'Fondo.png' %}");
+        background-color: #15327a;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+    
+    .titulo{
+        background-color: whitesmoke;
+        border-radius: 40px;
+        padding: 5px;
+        text-align: center;
+        font-family: arial;
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+
+    h1{
+        color:black;
+        font-size: xxx-large;
+    }
+
+</style>
+
+    <body>
+        <div class="titulo">
+            <h1>Dirección de Mantenimiento Urbano</h1>
+            <br>
+   
+
+        </div>
+    </body>
+    {% endblock %}
+</html>

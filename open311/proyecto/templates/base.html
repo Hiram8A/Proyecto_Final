@@ -1,0 +1,64 @@
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+
+<html>
+    <head>
+        {% bootstrap_css %}
+    </head>
+
+    <body>
+        <header>
+            <!-- navbar (Barra de Navegacion)-->
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                {% load static %}
+                <a class="navbar-brand" href="#"> <!-- Logo en PNG del Gobierno Municipal de Chihuahua, que redirige a la pangina de Inicio-->
+                    <img src="{% static 'logo_gob.png' %}" width= 20% height=auto alt="">
+                </a>
+                
+                <!-- Botón de alternancia-->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+                <!-- Contenido del menú colapsable -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <!-- Lista de los Elementos del Menú-->
+                    <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'inicio' %}" style="color: white;"> Inicio</a>
+                                </li>
+                            {% comment %} <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}" style="color: white;"> Logout </a>
+                            </li> {% endcomment %}
+                            <li class="nav-item">
+                                <a class="nav-link" style="color: white;"> Logout </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'inicio' %}" style="color: white;"> Inicio </a>
+                            </li>
+                            {% comment %} <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}" style="color: white;"> Login de Servidores Públicos</a>
+                            </li> {% endcomment %}
+                            <li class="nav-item">
+                                <a class="nav-link" style="color: white;"> Login de Servidores Públicos</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    
+                </div>
+
+
+            </nav>
+        </header>
+        <main>
+            {% block content%}
+            {% endblock %}
+
+        </main>
+        {% bootstrap_javascript %}
+    </body>
+</html>

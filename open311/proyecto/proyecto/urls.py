@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('DMU/', include("DMU.urls")),
+    path('admin/', admin.site.urls),    # URL Admin para Gestionar Tablas y Usuarios
+    path('DMU/', include("DMU.urls")),  # Referencia App Solicitudes
 ]
