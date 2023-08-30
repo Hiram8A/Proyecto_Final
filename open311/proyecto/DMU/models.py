@@ -29,5 +29,5 @@ class Solicitudes(models.Model):
     # Archivos adjuntos opcionales, para agilizar la respuesta a la solicitud, y para fines de evidencia
     adjuntos = models.OneToOneField(Adjuntos, on_delete=models.CASCADE, null=True, blank=True)
 
-    def _str_(self):
-        return self.titulo
+    def __int__(self):
+        return self.pk # Devuelve la PK relacionando las tabla y evitar crear modelos adicionales innecesarios

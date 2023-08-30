@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Solicitudes </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-image: url("{% static 'Fondo.png' %}");
+            background-color: #15327a;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .btn {
+        display: inline-block;
+        background-color: crimson;
+        padding: 10px 20px;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #2251c6;
+    }
+    </style>
+</head>
+<body>
+    <h1> Listado de Solicitudes </h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Reporte</th>
+                <th>Título</th>
+                <th>Tipo de Solicitud</th>
+                <th>Fecha del Reporte</th>
+                <th>Descripción</th>
+                <th>Adjuntos</th>
+                <th>Respuesta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Muestra el listado de solicitudes que han sido enviadas a la base de datos-->
+            {% for solicitud in solicitudes %}
+                <tr>
+                    <td>{{ solicitud.pk }}</td>
+                    <td>{{ solicitud.titulo }}</td>
+                    <td>{{ solicitud.get_lista_desplegable_display }}</td>
+                    <td>{{ solicitud.fecha_reporte }}</td>
+                    <td>{{ solicitud.descripcion }}</td>
+                    <td>
+                        {% if solicitud.adjuntos %}
+                            <a href="{{ solicitud.adjuntos.archivo.url }}" target="_blank">Ver Adjunto</a>
+                        {% else %}
+                            No hay adjuntos
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'home' %}" class="btn">Regresar a Inicio</a>
+    </div>
+</body>
+</html>
+{% endblock %}
+

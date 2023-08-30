@@ -1,19 +1,20 @@
 from django.http import HttpResponse
 from django.views import View
+from django.shortcuts import render, redirect, get_object_or_404
+
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .models import Solicitudes     # Importacion de los modelos de Solicitudes 
 from .forms import SolicitudForm
-
-from django.shortcuts import render   #, redirect
-
 
 def index(): 
     
     return HttpResponse("App de Solicitudes DMU") 
 
-#Vista Inicio, para mostrar los elementos esenciales de interacción con la plataforma
+# Vista de la Pantalla de Inicio
 class Inicio(View):
-    template_name = 'inicio.html'
+    template_name = 'home.html'
     
     def post(self, request): 
     
@@ -38,3 +39,17 @@ class Solicitud(View):
     def get(self, request): #Regresa los datos de la solicitud, para fines de consulta y respuesta del servidor público
         form = SolicitudForm()
         return render(request, self.template_name, {'form': form})
+    
+class lista_solicitudes(View):
+    template_name = 'lista_solicitudes.html'
+
+    def post(self,request):
+
+        return render(request,self.template_name)
+    @method_decorator(login_required)
+
+
+    def get(self,request):
+        solicitudes = Solicitudes.objects.all()
+
+        return render(request,self.template_name,{'solicitudes':solicitudes})

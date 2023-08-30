@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load bootstrap4 %}
+{% load widget_tweaks %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url("{% static 'Fondo.png' %}");
+            background-color: #15327a;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+          }
+        
+        label {
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: auto;
+            margin-left: 25%;
+            background-color: rgba(13, 19, 52, 0.8);
+            padding: 15px;
+            border-radius: 30px;
+        }
+        button[type="submit"] {
+            background-color: crimson;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2251c6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="form-container">
+        <!--Formulario para creación de solicitudes por Ciudadanos-->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.titulo.id_for_label }}">Titulo</label>
+                {{ form.titulo|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.lista_desplegable.id_for_label }}">Tipo de reporte</label>
+                {{ form.lista_desplegable|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.descripcion.id_for_label }}">Descripción de la solicitud a atender</label>
+                {{ form.descripcion|add_class:"form-control" }}
+            </div>
+            <div class="form-group">
+
+                <!--Opcion de Adjuntar Archivos de manera Opcional -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="adjuntar-archivo-checkbox">
+                    <label class="form-check-label" for="adjuntar-archivo-checkbox">
+                        Adjuntar un archivo
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="archivo-field" style="display: none;">
+                <input type="file" id="{{ form.adjuntos.id_for_label }}" name="{{ form.adjuntos.name }}">
+            </div>
+
+            <!-- Se asigna la Fecha de reporte con la fecha actual automáticamente, no visible para el usuario -->
+            <div class="form-group" style="display: none;">
+                <label for="{{ form.fecha_reporte.id_for_label }}">Fecha de reporte</label>
+                {{ form.fecha_reporte|add_class:"form-control" }}
+            </div>
+            <button class="btn" type="submit"{% if solicitud %} disabled {% endif %}>Enviar solicitud</button>
+            <a class="btn btn-secondary" href="{% url 'home' %}">Cancelar</a>
+        </form>
+
+        <!--Al dar click en enviar, se le proporciona el número de seguimiento a su reporte-->
+        {% if solicitud %}
+            <p style="color: white;">El número de reporte es: <p style="font-weight: bolder; font-size: 24px; color: white;">{{ solicitud.pk }}</p></p>
+        {% endif %}
+
+        <script>
+            const checkbox = document.getElementById('adjuntar-archivo-checkbox');
+            const campoArchivo = document.getElementById('archivo-field');
+            campoArchivo.style.display = 'none';
+            checkbox.addEventListener('change', function () {
+                campoArchivo.style.display = checkbox.checked ? 'block' : 'none';
+            });
+        </script>
+    
+    </div>
+</body>
+</html>
+{% endblock %}
